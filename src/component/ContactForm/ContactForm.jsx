@@ -3,7 +3,7 @@ import css from "./ContactForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
-import { addContact } from "../../redux/contactsSlice";
+import { addContact } from "../../redux/operations";
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "Too Short!")
@@ -18,7 +18,8 @@ const FeedbackSchema = Yup.object().shape({
 const ContactForm = () => {
   const dispach = useDispatch();
   const handleSubmit = (values, actions) => {
-    dispach(addContact(values));
+    const user = { name: values.name, phone: values.number };
+    dispach(addContact(user));
     actions.resetForm();
   };
 
@@ -37,7 +38,6 @@ const ContactForm = () => {
           <ErrorMessage name="name" as="span" />
         </div>
         <div className={css.inputContainer}>
-          {" "}
           <label className={css.label}>
             Number
             <Field className={css.input} type="text" name="number" />
